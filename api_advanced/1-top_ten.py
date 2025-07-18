@@ -1,18 +1,22 @@
 #!/usr/bin/python3
-"""1-top_ten.py"""
-
+"""Print the titles of the first 10Hot Posts"""
 import requests
 
 
 def top_ten(subreddit):
-    """Top ten subreddit"""
-    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
-    headers = {'User-Agent': 'My-User-Agent'}
+    """The top ten titles"""
+    headers = {'User-Agent': 'python:my_reddit_script:v1.0.0 (by anonymous)'}
+    url = "https://reddit.com/r/{}.json".format(subreddit)
+    response = requests.get(url, headers=headers)
 
-    response = requests.get(url, headers=headers, allow_redirects=False)
     if response.status_code == 200:
-        data = response.json()
-        posts = data.get('data').get('children')
-        [print(post.get('data').get('title')) for post in posts]
+        json_data = response.json()
+        for i in range(10):
+            print(
+                    json_data.get('data')
+                    .get('children')[i]
+                    .get('data')
+                    .get('title')
+                )
     else:
         print(None)
